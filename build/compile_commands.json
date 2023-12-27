@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/cpp/sha-256/build",
+  "command": "/usr/bin/g++ -D_sha256_EXPORTS -isystem /usr/local/byte_utils/cmake/../include -g -fPIC -std=gnu++17 -o CMakeFiles/_sha256.dir/src/sha256.cpp.o -c /home/cpp/sha-256/src/sha256.cpp",
+  "file": "/home/cpp/sha-256/src/sha256.cpp"
+}
+]
