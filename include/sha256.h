@@ -1,5 +1,5 @@
 /* 
-  Copyright (C) 2023  Oprișor Adrian-Ilie
+  Copyright (C) 2024  Oprișor Adrian-Ilie
   
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -16,12 +16,13 @@
    
   Contact: contact@dev-adrian.com
 */
-#ifndef SHA256_SHA256_H_
-#define SHA256_SHA256_H_
+#ifndef SECURE_HASH_ALGORITHMS_SHA256_H_
+#define SECURE_HASH_ALGORITHMS_SHA256_H_
 
 #include <array>
 #include <cstdint>
 #include <string>
+#include <vector>
 
 #include <byte_vector.h>
 #include <word.h>
@@ -32,13 +33,18 @@ namespace Cryptography {
 
 class SHA256: public details::SHA {
   public:
+    // Instantiate a `SHA256` object with the default key.
     SHA256();
-    ByteUtils::ByteVector ComputeDigest(
-        const ByteUtils::ByteVector& message) override;
+    // Returns the computed digest as a vector of bytes.
+    ByteUtils::ByteVector Digest(const ByteUtils::ByteVector& message) override;
   private:
+    // Initiate the `hash_` with default hexadecimal values.
     void InitHash() override;
+    // Initiate the `key_` with default hexadecimal values.
     void InitKey() override;
     ByteUtils::ByteVector PaddMessage(ByteUtils::ByteVector message) override;
+    std::vector<ByteUtils::ByteVector> ParseMessage(
+        const ByteUtils::ByteVector& message) const override;
     ByteUtils::ByteVector ScheduleMessage(
         const ByteUtils::ByteVector& message) const override;
     void ComputeHash(const ByteUtils::ByteVector& message) override;
@@ -60,4 +66,4 @@ class SHA256: public details::SHA {
 
 }  // namespace Cryptography
 
-#endif // SHA256_SHA256_H_
+#endif // SECURE_HASH_ALGORITHMS_SHA256_H_

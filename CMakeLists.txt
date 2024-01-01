@@ -1,5 +1,5 @@
 #[[ 
-  Copyright (C) 2023 Oprișor Adrian-Ilie
+  Copyright (C) 2024 Oprișor Adrian-Ilie
   
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -17,23 +17,16 @@
   Contact: contact@dev-adrian.com
 ]]
 cmake_minimum_required(VERSION 3.2)
-project(sha256)
+project(secure_hash_algorithms)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED on)
-set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR})
 
 find_package(ByteUtils REQUIRED)
 
-add_executable(${CMAKE_PROJECT_NAME}
-  main.cpp
-  src/sha256.cpp
-)
-target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/include/)
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE ByteUtils)
-
 add_library(_${CMAKE_PROJECT_NAME} SHARED
   src/sha256.cpp
+  src/sha.cpp
 )
 target_include_directories(_${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/include/)
 target_link_libraries(_${CMAKE_PROJECT_NAME} PRIVATE ByteUtils)

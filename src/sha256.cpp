@@ -1,5 +1,5 @@
 /* 
-  Copyright (C) 2023  Oprișor Adrian-Ilie
+  Copyright (C) 2024  Oprișor Adrian-Ilie
   
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -18,23 +18,14 @@
 */
 #include "sha256.h"
 
-#include <iostream>
-#include <vector>
-
-#include "word.h"
-
 namespace Cryptography {
 
 SHA256::SHA256() {
   InitKey();
 }
 
-ByteUtils::ByteVector SHA256::ComputeDigest(
-    const ByteUtils::ByteVector& message) {
-  InitHash();
-  ByteUtils::ByteVector message_block = PaddMessage(message);
-  ByteUtils::ByteVector shedule = ScheduleMessage(message_block);
-  ComputeHash(shedule);
+ByteUtils::ByteVector SHA256::Digest(const ByteUtils::ByteVector& message) {
+  ComputeDigest(message);
   ByteUtils::ByteVector digest;
   for (const auto& word : hash_) {
     digest.PushBack(word);
@@ -71,23 +62,35 @@ void SHA256::InitKey() {
 }
 
 ByteUtils::ByteVector SHA256::PaddMessage(ByteUtils::ByteVector message) {
-  std::size_t message_size = message.Size() * 8;
+  std::size_t msg_bits_size = message.Size() * 8;
   message.PushBack(0x80);
-  std::size_t bits_2_append = (440 - message_size);
-  std::size_t bytes_2_append = 0;
+  int bits_2_append = (440 - msg_bits_size);
   if (bits_2_append < 0) {
-    bytes_2_append = ((bits_2_append + 512) + 7) / 8;
-  } else {
-    bytes_2_append = (bits_2_append + 7) / 8;
+    bits_2_append += 512;
   }
+  std::size_t bytes_2_append = (bits_2_append + 7) / 8;
   while (bytes_2_append--) {
     message.PushBack(ByteUtils::Byte(0x00));
   }
-  message.PushBack(ByteUtils::Word<64>(message_size));
+  message.PushBack(ByteUtils::Word<64>(msg_bits_size));
   return message;
 }
 
-ByteUtils::ByteVector  SHA256::ScheduleMessage(
+std::vector<ByteUtils::ByteVector> SHA256::ParseMessage(
+    const ByteUtils::ByteVector& message) const {
+  std::vector<ByteUtils::ByteVector> message_blocks;
+  std::size_t blocks_ = (message.Size() + 63) / 64;
+  for (std::size_t index = 0; index < blocks_; index++) {
+    ByteUtils::ByteVector temp;
+    for (std::size_t i = index * 64; i < (index * 64) + 64; i++) {
+      temp.PushBack(message[i]);
+    }
+    message_blocks.push_back(temp);
+  } 
+  return message_blocks;
+}
+
+ByteUtils::ByteVector SHA256::ScheduleMessage(
     const ByteUtils::ByteVector& message) const {
   ByteUtils::ByteVector msg_schedule;    
   for (std::size_t index = 0; index < 16; index++) {
