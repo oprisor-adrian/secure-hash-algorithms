@@ -25,8 +25,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED on)
 find_package(ByteUtils REQUIRED)
 
 add_library(_${CMAKE_PROJECT_NAME} SHARED
+  src/sha.cpp  
   src/sha256.cpp
-  src/sha.cpp
+  src/sha1.cpp
 )
 target_include_directories(_${CMAKE_PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/include/)
 target_link_libraries(_${CMAKE_PROJECT_NAME} PRIVATE ByteUtils)

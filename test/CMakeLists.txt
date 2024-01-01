@@ -18,6 +18,7 @@
 ]]
 include(GoogleTest)
 add_executable(${CMAKE_PROJECT_NAME}_test
+  test_sha1.cpp
   test_sha256.cpp
 )
 target_link_libraries(${CMAKE_PROJECT_NAME}_test
