@@ -18,6 +18,8 @@
 */
 #include "sha256.h"
 
+#include <vector>
+
 namespace Cryptography {
 
 SHA256::SHA256() {
@@ -79,12 +81,10 @@ ByteUtils::ByteVector SHA256::PaddMessage(ByteUtils::ByteVector message) {
 std::vector<ByteUtils::ByteVector> SHA256::ParseMessage(
     const ByteUtils::ByteVector& message) const {
   std::vector<ByteUtils::ByteVector> message_blocks;
-  std::size_t blocks_ = (message.Size() + 63) / 64;
-  for (std::size_t index = 0; index < blocks_; index++) {
-    ByteUtils::ByteVector temp;
-    for (std::size_t i = index * 64; i < (index * 64) + 64; i++) {
-      temp.PushBack(message[i]);
-    }
+  std::size_t no_blocks = (message.Size() + 63) / 64;
+  for (std::size_t index = 0; index < no_blocks; index++) {
+    std::size_t s_index = index * 64;
+    ByteUtils::ByteVector temp = message.Subvector(s_index, 64);
     message_blocks.push_back(temp);
   } 
   return message_blocks;
@@ -92,10 +92,7 @@ std::vector<ByteUtils::ByteVector> SHA256::ParseMessage(
 
 ByteUtils::ByteVector SHA256::ScheduleMessage(
     const ByteUtils::ByteVector& message) const {
-  ByteUtils::ByteVector msg_schedule;    
-  for (std::size_t index = 0; index < 16; index++) {
-    msg_schedule.PushBack(message.GetWord<32>(index));
-  }
+  ByteUtils::ByteVector msg_schedule = message.Subvector(0, 64);
   for (std::size_t index = 16; index < 64; index++) {
     auto result = Sigma1(msg_schedule.GetWord<32>(index-2)) + 
                   msg_schedule.GetWord<32>(index-7) + 

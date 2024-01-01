@@ -22,7 +22,6 @@
 #include <array>
 #include <cstdint>
 #include <string>
-#include <vector>
 
 #include <byte_vector.h>
 #include <word.h>
@@ -33,14 +32,12 @@ namespace Cryptography {
 
 class SHA256: public details::SHA {
   public:
-    // Instantiate a `SHA256` object with the default key.
+    // Creates a `SHA256` object with the default `key`.
     SHA256();
     // Returns the computed digest as a vector of bytes.
     ByteUtils::ByteVector Digest(const ByteUtils::ByteVector& message) override;
   private:
-    // Initiate the `hash_` with default hexadecimal values.
     void InitHash() override;
-    // Initiate the `key_` with default hexadecimal values.
     void InitKey() override;
     ByteUtils::ByteVector PaddMessage(ByteUtils::ByteVector message) override;
     std::vector<ByteUtils::ByteVector> ParseMessage(
