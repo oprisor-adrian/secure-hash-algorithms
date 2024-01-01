@@ -21,7 +21,7 @@
 
 #include <byte_vector.h>
 
-namespace Cryptography::details {
+namespace Cryptography {
 
 // The class `SHA` represents a base class 
 // for the algorithms from SHA cryptographic family.
@@ -47,6 +47,6 @@ class SHA {
     virtual void ComputeHash(const ByteUtils::ByteVector& message) = 0;
 };
 
-}  // namespace details
+}  // namespace Cryptography
 
 #endif  // SECURE_HASH_ALGORITHMS_SHA_H_

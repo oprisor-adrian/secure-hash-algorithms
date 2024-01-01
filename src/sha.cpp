@@ -20,7 +20,7 @@
 
 #include <iostream>
 
-namespace Cryptography::details {
+namespace Cryptography {
 
 void SHA::ComputeDigest(const ByteUtils::ByteVector& message) {
   auto message_blocks = Preprocess(message);
@@ -37,4 +37,4 @@ std::vector<ByteUtils::ByteVector> SHA::Preprocess(
   return ParseMessage(padded_message);
 }
 
-}  // namespace details
+}  // namespace Cryptography

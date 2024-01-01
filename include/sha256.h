@@ -30,7 +30,7 @@
 
 namespace Cryptography {
 
-class SHA256: public details::SHA {
+class SHA256: public SHA {
   public:
     // Creates a `SHA256` object with the default `key`.
     SHA256();
